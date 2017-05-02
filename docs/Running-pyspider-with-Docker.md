@@ -79,12 +79,28 @@ webui:
 - RESULT_CLS: Class name of result worker, default is pyspider.result.ResultWorker
 
 ## scheduler
+TASK_DB
+PROJECT_DB
+RESULT_DB
+AMQP_URL
 
 ## fetcher
+AMQP_URL
+
 ## processor
+PROJECT_DB
+AMQP_URL
+
 ## webui
 - WEBUI_USERNAME: username of locked projects
 - WEBUI_PASSWORD: password of locked projects
 
+PROJECT_DB
+TASK_DB
+RESULT_DB
+AMQP_URL
+
 ## phantomjs
 ## result worker
+RESULT_DB
+AMQP_URL

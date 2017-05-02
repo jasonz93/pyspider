@@ -21,6 +21,7 @@ from pyspider.message_queue import connect_message_queue
 from pyspider.database import connect_database
 from pyspider.libs import utils
 
+logger = logging.getLogger('runner')
 
 def read_config(ctx, param, value):
     if not value:
@@ -297,7 +298,7 @@ def result_worker(ctx, result_cls, get_object=False):
     """
     g = ctx.obj
     ResultWorker = load_cls(None, None, result_cls)
-    print "Result worker class %s loaded." % result_cls
+    logger.info("Result worker class %s loaded." % result_cls)
 
     result_worker = ResultWorker(resultdb=g.resultdb, inqueue=g.processor2result)
 
