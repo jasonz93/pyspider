@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM python:3.6.1
 MAINTAINER binux <roy@binux.me>
 
 # install phantomjs
@@ -22,7 +22,7 @@ ADD ./ /opt/pyspider
 WORKDIR /opt/pyspider
 RUN pip install -e .[all]
 
-VOLUME ["/opt/pyspider"]
+VOLUME ["/opt/pyspider", "/opt/pyspider/data"]
 ENTRYPOINT ["pyspider"]
 
 EXPOSE 5000 23333 24444 25555

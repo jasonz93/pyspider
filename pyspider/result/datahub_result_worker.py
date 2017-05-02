@@ -2,6 +2,9 @@ from .result_worker import ResultWorker
 from datahub import DataHub
 from datahub.models import TupleRecord, Topic
 import os
+import logging
+
+logger = logging.getLogger('datahub_result_worker')
 
 class DataHubResultWorker(ResultWorker):
     def __init__(self, resultdb, inqueue):
@@ -20,8 +23,11 @@ class DataHubResultWorker(ResultWorker):
         :type result: dict 
         :return: 
         """
-        super(DataHubResultWorker, self).on_result(task, result)
-        topicName = task['project']
+        result = super(DataHubResultWorker, self).on_result(task, result)
+        if not result.has_key('datahub_topic'):
+            logger.warn("received result without datahub topic: %.30r" % result)
+            return result
+        topicName = result['datahub_topic']
         if not self.topicInfos.has_key(topicName):
             self.datahub.wait_shards_ready(self.project, topicName)
             topicInfo = {
@@ -53,4 +59,5 @@ class DataHubResultWorker(ResultWorker):
         records.append(record)
 
         failed_indexes = self.datahub.put_records(self.project, topicName, records)
-        print "put tuple %d records, failed list: %s" %(len(records), failed_indexes)
+        logger.info("put tuple %d records, failed list: %s" %(len(records), failed_indexes))
+        return result

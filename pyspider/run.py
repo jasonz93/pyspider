@@ -85,6 +85,8 @@ def connect_rpc(ctx, param, value):
 @click.option('--data-path', default='./data', help='data dir path')
 @click.option('--add-sys-path/--not-add-sys-path', default=True, is_flag=True,
               help='add current working directory to python lib search path')
+@click.option('--result-cls', default='pyspider.result.ResultWorker',
+              envvar='RESULT_CLS', help='Class name of result worker')
 @click.version_option(version=pyspider.__version__, prog_name=pyspider.__name__)
 @click.pass_context
 def cli(ctx, **kwargs):
@@ -286,7 +288,7 @@ def processor(ctx, processor_cls, process_time_limit, enable_stdout_capture=True
 
 
 @cli.command()
-@click.option('--result-cls', default='pyspider.result.ResultWorker', callback=load_cls,
+@click.option('--result-cls', envvar='RESULT_CLS', default='pyspider.result.ResultWorker', callback=load_cls,
               help='ResultWorker class to be used.')
 @click.pass_context
 def result_worker(ctx, result_cls, get_object=False):
@@ -295,6 +297,7 @@ def result_worker(ctx, result_cls, get_object=False):
     """
     g = ctx.obj
     ResultWorker = load_cls(None, None, result_cls)
+    print "Result worker class %s loaded." % result_cls
 
     result_worker = ResultWorker(resultdb=g.resultdb, inqueue=g.processor2result)
 
@@ -437,13 +440,15 @@ def phantomjs(ctx, phantomjs_path, port, auto_restart, args):
 @cli.command()
 @click.option('--fetcher-num', default=1, help='instance num of fetcher')
 @click.option('--processor-num', default=1, help='instance num of processor')
+@click.option('--result-cls', default='pyspider.result.ResultWorker',
+              envvar='RESULT_CLS', help='Class name of result worker')
 @click.option('--result-worker-num', default=1,
               help='instance num of result worker')
 @click.option('--run-in', default='subprocess', type=click.Choice(['subprocess', 'thread']),
               help='run each components in thread or subprocess. '
               'always using thread for windows.')
 @click.pass_context
-def all(ctx, fetcher_num, processor_num, result_worker_num, run_in):
+def all(ctx, fetcher_num, processor_num, result_cls, result_worker_num, run_in):
     """
     Run all the components in subprocess or thread
     """
@@ -470,7 +475,11 @@ def all(ctx, fetcher_num, processor_num, result_worker_num, run_in):
                 g['phantomjs_proxy'] = '127.0.0.1:%s' % phantomjs_config.get('port', 25555)
 
         # result worker
-        result_worker_config = g.config.get('result_worker', {})
+        result_worker_cls = g.get('result_cls', None)
+        if result_worker_cls == None:
+            result_worker_config = g.config.get('result_worker', {})
+        else:
+            result_worker_config = {'result_cls': result_worker_cls}
         for i in range(result_worker_num):
             threads.append(run_in(ctx.invoke, result_worker, **result_worker_config))
 

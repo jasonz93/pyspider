@@ -67,4 +67,24 @@ webui:
 
 `docker-compose up`
 
+# Environments
+## common
+- DEBUG: True or False, default is False
+- QUEUE_MAXSIZE: Max size of queue, default is 100
+- TASKDB: Database url for taskdb, default is sqlite
+- PROJECTDB: Database url for projectdb, default is sqlite
+- RESULTDB: Database url for resultdb, default is sqlite
+- AMQP_URL: Connection url to message queue
+- PHANTOMJS_PROXY: phantomjs proxy ip:port
+- RESULT_CLS: Class name of result worker, default is pyspider.result.ResultWorker
 
+## scheduler
+
+## fetcher
+## processor
+## webui
+- WEBUI_USERNAME: username of locked projects
+- WEBUI_PASSWORD: password of locked projects
+
+## phantomjs
+## result worker
