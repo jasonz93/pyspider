@@ -23,7 +23,7 @@ class DataHubResultWorker(ResultWorker):
         :type result: dict 
         :return: 
         """
-        result = super(DataHubResultWorker, self).on_result(task, result)
+        super(DataHubResultWorker, self).on_result(task, result)
         if 'datahub_topic' not in result:
             logger.warn("received result without datahub topic: %.30r" % result)
             return result
