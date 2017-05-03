@@ -51,7 +51,7 @@ else:  # 2.7
 
 extras_require_all = [
     'mysql-connector-python>=1.2.2',
-    'pymongo>=2.7.2',
+    'pymongo>=3.4.0',
     'SQLAlchemy>=0.9.7',
     'redis',
     'psycopg2',
