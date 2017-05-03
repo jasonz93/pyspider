@@ -24,11 +24,11 @@ class DataHubResultWorker(ResultWorker):
         :return: 
         """
         result = super(DataHubResultWorker, self).on_result(task, result)
-        if not result.has_key('datahub_topic'):
+        if 'datahub_topic' not in result:
             logger.warn("received result without datahub topic: %.30r" % result)
             return result
         topicName = result['datahub_topic']
-        if not self.topicInfos.has_key(topicName):
+        if topicName not in self.topicInfos:
             self.datahub.wait_shards_ready(self.project, topicName)
             topicInfo = {
                 'topic': self.datahub.get_topic(topicName, self.project),
@@ -47,7 +47,7 @@ class DataHubResultWorker(ResultWorker):
 
         values = []
         for field in topic.record_schema.fields:
-            if (result.has_key(field.name)):
+            if field.name in result:
                 values.append(result[field.name])
             else:
                 values.append(None)
