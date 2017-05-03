@@ -22,4 +22,5 @@ kombu
 psycopg2
 elasticsearch
 tblib
--e git+https://github.com/1zhen/aliyun-datahub-sdk-python.git@python36#egg=pydatahub
+pydatahub
+#-e git+https://github.com/1zhen/aliyun-datahub-sdk-python.git@python36#egg=pydatahub
