@@ -4,7 +4,7 @@
 // Created on 2014-10-29 22:12:14
 
 var port, server, service,
-  wait_before_end = 2000,
+  wait_before_end = 5000,
   system = require('system'),
   webpage = require('webpage');
 
