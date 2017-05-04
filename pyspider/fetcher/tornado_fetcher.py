@@ -345,6 +345,8 @@ class Fetcher(object):
         if 'cookies' in fetch:
             session.update(fetch['cookies'])
             del fetch['cookies']
+        if 'wait' in fetch:
+            del fetch['wait']
 
         max_redirects = task_fetch.get('max_redirects', 5)
         # we will handle redirects by hand to capture cookies
