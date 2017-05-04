@@ -4,7 +4,7 @@
 // Created on 2014-10-29 22:12:14
 
 var port, server, service,
-  wait_before_end = 5000,
+  wait_before_end = 1000,
   system = require('system'),
   webpage = require('webpage');
 
@@ -45,6 +45,8 @@ if (system.args.length !== 2) {
 
     var fetch = JSON.parse(request.postRaw);
     console.debug(JSON.stringify(fetch, null, 2));
+
+    var wait_before_end = fetch.wait | 1000;
 
     // create and set page
     var page = webpage.create();
