@@ -366,7 +366,7 @@ def webui(ctx, host, port, cdn, scheduler_rpc, fetcher_rpc, max_rate, max_burst,
         except ImportError:
             from xmlrpclib import Binary
         fetcher_rpc = connect_rpc(ctx, None, fetcher_rpc)
-        app.config['fetch'] = lambda x: umsgpack.unpackb(fetcher_rpc.fetch(Binary(umsgpack.packb(x))).data)
+        app.config['fetch'] = lambda x: umsgpack.unpackb(fetcher_rpc.fetch(umsgpack.packb(x)).data)
     else:
         # get fetcher instance for webui
         fetcher_config = g.config.get('fetcher', {})
