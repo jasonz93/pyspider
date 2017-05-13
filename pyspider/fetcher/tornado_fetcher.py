@@ -699,7 +699,7 @@ class Fetcher(object):
         application.register_function(self.size)
 
         def sync_fetch(task):
-            task = umsgpack.unpackb(task)
+            task = utils.decode_unicode_obj(json.loads(task))
             result = self.sync_fetch(task)
             result = Binary(umsgpack.packb(result))
             return result
