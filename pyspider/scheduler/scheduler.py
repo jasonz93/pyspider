@@ -158,7 +158,7 @@ class Scheduler(object):
         3: 12*60*60,
         '': 24*60*60
     }
-    FAIL_PAUSE_NUM = 10
+    FAIL_PAUSE_NUM = 200
     PAUSE_TIME = 1*60
     UNPAUSE_CHECK_NUM = 3
 
